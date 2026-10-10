@@ -1,0 +1,38 @@
+.vp-wallpaper { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #24342c; pointer-events: none; }
+.vp-wallpaper img, .vp-wallpaper video { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.vp-wallpaper::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #0002, #0004); }
+.cdp-root[data-wallpaper="video"] .cdp-hello { color: #fff; text-shadow: 0 2px 16px #0008; }
+.cdp-root[data-wallpaper="video"] .cdp-eyebrow { color: #fff; }
+.cdp-root[data-wallpaper="video"] .cdp-icon-label { color: #fff; background: #172b25aa; border-radius: 6px; text-shadow: 0 1px 3px #0006; }
+.cdp-preview { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.cdp-file .cdp-preview { width: 72px; height: 46px; border-radius: 5px; }
+.cdp-row .cdp-preview { width: 24px; height: 18px; border-radius: 2px; }
+.cdp-tile .cdp-preview { aspect-ratio: 16/10; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--cdp-line); }
+.cdp-preview.is-square { object-position: center top; }
+.cdp-preview-fallback { display: grid; place-items: center; min-height: 70px; background: #eee; color: #333; }
+.cdp-shot:focus-visible { outline: 3px solid var(--cdp-deep); outline-offset: 3px; }
+.mp-player { display: flex; flex-direction: column; gap: 14px; padding: 20px 26px; overflow: auto; flex: 1; background: linear-gradient(160deg, #f7e7e9, #f7f7f9 70%); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; }
+.mp-heading { display: flex; justify-content: space-between; color: #68626b; font-size: 10px; letter-spacing: 1.5px; font-weight: 600; }
+.mp-cover { width: min(100%, 220px); aspect-ratio: 1; object-fit: cover; margin: 0 auto 6px; border-radius: 14px; box-shadow: 0 16px 28px -14px #482a4c80; transform: scale(.94); transition: transform .25s ease; }
+.mp-cover.is-playing { transform: scale(1); }
+.mp-track { display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+.mp-track h2 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -.4px; line-height: 1.2; }
+.mp-track p { margin: 5px 0 0; font-size: 14px; color: #706974; }
+.cdp-root .mp-repeat { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; color: #706974; }
+.cdp-root .mp-repeat[aria-pressed="true"] { color: #ad2f5f; background: #efdae2; }
+.mp-repeat svg { width: 22px; height: 22px; }
+.mp-timeline { display: flex; align-items: center; min-height: 44px; margin: -7px 0 -18px; }
+.mp-timeline input { width: 100%; min-height: 44px; accent-color: #ad2f5f; cursor: pointer; touch-action: pan-y; }
+.mp-times { display: flex; justify-content: space-between; color: #706974; font-size: 11px; font-variant-numeric: tabular-nums; }
+.mp-controls { display: flex; align-items: center; justify-content: space-evenly; gap: 16px; }
+.cdp-root .mp-controls button { display: grid; place-items: center; width: 48px; height: 48px; cursor: pointer; border-radius: 50%; }
+.mp-controls svg { width: 30px; height: 30px; }
+.cdp-root .mp-controls .mp-play { width: 64px; height: 64px; background: #ad2f5f; color: #fff; }
+.mp-controls button:active, .mp-repeat:active { transform: scale(.94); }
+.mp-controls button:disabled { opacity: .35; }
+.mp-controls button:focus-visible, .mp-repeat:focus-visible { outline: 2px solid #ad2f5f; outline-offset: 3px; }
+.mp-status { margin: 0; color: #706974; font-size: 10px; text-align: center; }
+.mp-error { margin: 0; color: #a31b3d; font-size: 12px; }
+.mp-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 639px) { .mp-player { padding: 18px 22px; } .mp-cover { width: min(100%, 200px); } }
+@media (prefers-reduced-motion: reduce) { .mp-cover { transform: none; transition: none; } }

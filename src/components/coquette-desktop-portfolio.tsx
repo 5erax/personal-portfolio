@@ -9,11 +9,13 @@
 // per project); documents open About Me and a Mail composer. Windows drag,
 // resize, zoom, minimise into the dock and stack by focus. The dock magnifies
 // and bounces, ⌘/Ctrl+K opens Spotlight, the grid opens Launchpad, and the
-// maroon disc plays a little music box. Right-click the wallpaper for more.
+// Music opens the native MP3 player. Right-click the wallpaper for more.
 //
-// Every icon, thumbnail and sound is made in this file — nothing loads.
+// Desktop icons are SVG; previews and music are local, the original video uses Blob.
 import * as React from "react"
 import profile from "../portfolio.json"
+import { MusicPlayer, useAudioPlayer, type MusicTrack } from "./music-player"
+import { VideoWallpaper } from "./video-wallpaper"
 
 /* ------------------------------------------------------------------ types */
 
@@ -25,6 +27,7 @@ export type DesktopProject = {
   role?: string
   tags?: string[]
   url?: string
+  image?: string
 }
 
 export type FolderStyle = "blush" | "noir" | "ribbon" | "bows" | "plain"
@@ -44,7 +47,7 @@ export type DesktopFolder = {
 
 export type DesktopLink = { label: string; url: string }
 export type DesktopFaq = { q: string; a: string }
-export type Wallpaper = "plain" | "blush" | "gingham" | "dots"
+export type Wallpaper = "video" | "plain" | "blush" | "gingham" | "dots"
 
 export type CoquetteDesktopPortfolioProps = {
   name?: string
@@ -61,7 +64,7 @@ export type CoquetteDesktopPortfolioProps = {
   now?: string[]
   skills?: string[]
   faq?: DesktopFaq[]
-  song?: { title: string; artist: string }
+  song?: MusicTrack
   /** Soft pink used for bows, folders and highlights. */
   accent?: string
   /** Deep maroon used for selection, buttons and dock apps. */
@@ -300,7 +303,7 @@ const DOCK: DockApp[] = [
   { key: "messages", label: "Messages", kind: "messages" },
   { key: "gallery", label: "Gallery", kind: "gallery" },
   { key: "notes", label: "Now", kind: "notes" },
-  { key: "music", label: "Music Box", kind: "music" },
+  { key: "music", label: "Music", kind: "music" },
   { key: "skills", label: "Skills", kind: "skills" },
   { key: "trash", label: "Trash", kind: "trash" },
 ]
@@ -423,127 +426,12 @@ function DockIcon({ app, uid, now }: { app: string; uid: string; now: Date }) {
   )
 }
 
-/** A generated website screenshot for a project — layout and palette come from its name. */
+/** Real demo images shared by Finder, Gallery and Launchpad. */
 function ProjectArt({ project, className, square }: { project: Project; className?: string; square?: boolean }) {
-  const h = hashString(project.name)
-  const PAL = [
-    ["#fde4ec", "#f4b6cb", "#7d1d45"],
-    ["#2b2b2e", "#f4b6cb", "#fafafa"],
-    ["#fff6f9", "#e27fa3", "#3a3a3e"],
-    ["#f6ede6", "#d98fa8", "#5b1a36"],
-  ]
-  const [bg, mid, ink] = PAL[h % PAL.length]
-  const v = (h >>> 3) % 3
-  const initial = project.name.trim().charAt(0).toUpperCase()
-  if (square)
-    return (
-      <svg viewBox="0 0 100 100" className={"cdp-svg " + (className ?? "")} aria-hidden="true">
-        <rect width="100" height="100" fill={bg} />
-        <circle cx={v === 1 ? 78 : 22} cy={v === 2 ? 80 : 22} r="30" fill={mid} opacity=".55" />
-        <text x="50" y="70" textAnchor="middle" fontSize="58" fontStyle="italic" fontWeight="700" fill={ink} fontFamily="'Times New Roman', Times, Georgia, serif">{initial}</text>
-        <Bow x={76} y={24} s={0.62} r={14} fill={mid} stroke={ink} />
-      </svg>
-    )
-  return (
-    <svg viewBox="0 0 160 100" className={"cdp-svg " + (className ?? "")} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="160" height="100" fill={bg} />
-      <rect width="160" height="9" fill={ink} opacity=".08" />
-      <circle cx="6" cy="4.5" r="1.6" fill="#ff5f57" />
-      <circle cx="11" cy="4.5" r="1.6" fill="#febc2e" />
-      <circle cx="16" cy="4.5" r="1.6" fill="#28c840" />
-      <rect x="40" y="2.5" width="80" height="4" rx="2" fill={ink} opacity=".12" />
-      {v === 0 && (
-        <>
-          <text x="12" y="46" fontSize="26" fontStyle="italic" fontWeight="700" fill={ink} fontFamily="Georgia, 'Times New Roman', serif">{project.name.split(" ")[0].toLowerCase()}</text>
-          <rect x="12" y="54" width="60" height="3" rx="1.5" fill={ink} opacity=".35" />
-          <rect x="12" y="60" width="44" height="3" rx="1.5" fill={ink} opacity=".25" />
-          <rect x="12" y="70" width="26" height="9" rx="4.5" fill={mid} />
-          <circle cx="122" cy="52" r="26" fill={mid} />
-          <Bow x={122} y={52} s={0.9} fill="#fff" stroke={ink} />
-        </>
-      )}
-      {v === 1 && (
-        <>
-          <text x="80" y="40" textAnchor="middle" fontSize="22" fontStyle="italic" fontWeight="700" fill={ink} fontFamily="Georgia, 'Times New Roman', serif">{project.name.toLowerCase()}</text>
-          <rect x="58" y="46" width="44" height="3" rx="1.5" fill={ink} opacity=".3" />
-          {[0, 1, 2].map((i) => (
-            <rect key={i} x={14 + i * 46} y="58" width="40" height="32" rx="3" fill={i === 1 ? mid : ink} opacity={i === 1 ? 1 : 0.1} />
-          ))}
-        </>
-      )}
-      {v === 2 && (
-        <>
-          <rect x="0" y="9" width="72" height="91" fill={mid} />
-          <text x="36" y="66" textAnchor="middle" fontSize="48" fontStyle="italic" fontWeight="700" fill={bg} fontFamily="Georgia, 'Times New Roman', serif">{initial}</text>
-          <rect x="84" y="28" width="60" height="5" rx="2.5" fill={ink} opacity=".7" />
-          <rect x="84" y="39" width="52" height="3" rx="1.5" fill={ink} opacity=".3" />
-          <rect x="84" y="45" width="46" height="3" rx="1.5" fill={ink} opacity=".3" />
-          <rect x="84" y="58" width="28" height="9" rx="4.5" fill={ink} />
-        </>
-      )}
-    </svg>
-  )
-}
-
-/* ------------------------------------------------------------ sound */
-
-// A tiny music box: a pentatonic loop on sine + triangle voices, made live.
-const MELODY = [0, 4, 7, 12, 11, 7, 4, 2, 4, 7, 9, 7, 4, 0, 2, -1, 0, 4, 7, 12, 14, 12, 9, 7, 9, 7, 4, 2, 0, -1, 0, null]
-
-function useMusicBox() {
-  const ctx = React.useRef(null as AudioContext | null)
-  const timer = React.useRef(null as number | null)
-  const step = React.useRef(0)
-  const [playing, setPlaying] = React.useState(false)
-
-  const stop = React.useCallback(() => {
-    if (timer.current !== null) window.clearInterval(timer.current)
-    timer.current = null
-    setPlaying(false)
-  }, [])
-
-  const play = React.useCallback(() => {
-    try {
-      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      if (!ctx.current) ctx.current = new AC()
-      const ac = ctx.current
-      void ac.resume()
-      const note = (semi: number) => {
-        const t = ac.currentTime
-        const f = 523.25 * Math.pow(2, semi / 12)
-        for (const [type, vol, mul] of [["sine", 0.07, 1], ["triangle", 0.025, 2]] as const) {
-          const o = ac.createOscillator()
-          const g = ac.createGain()
-          o.type = type
-          o.frequency.value = f * mul
-          g.gain.setValueAtTime(0, t)
-          g.gain.linearRampToValueAtTime(vol, t + 0.01)
-          g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1)
-          o.connect(g).connect(ac.destination)
-          o.start(t)
-          o.stop(t + 1.2)
-        }
-      }
-      if (timer.current !== null) window.clearInterval(timer.current)
-      timer.current = window.setInterval(() => {
-        const n = MELODY[step.current % MELODY.length]
-        step.current++
-        if (n !== null) note(n)
-      }, 260)
-      setPlaying(true)
-    } catch {
-      setPlaying(false)
-    }
-  }, [])
-
-  React.useEffect(
-    () => () => {
-      if (timer.current !== null) window.clearInterval(timer.current)
-      void ctx.current?.close().catch(() => {})
-    },
-    [],
-  )
-  return { playing, play, stop }
+  const [failed, setFailed] = React.useState(false)
+  React.useEffect(() => setFailed(false), [project.image])
+  if (!project.image || failed) return <div className="cdp-preview-fallback">Preview unavailable</div>
+  return <img className={"cdp-preview " + (square ? "is-square " : "") + (className ?? "")} src={project.image} alt={project.name + " — demo preview"} loading="lazy" decoding="async" onError={() => setFailed(true)} />
 }
 
 /* ------------------------------------------------------------ app views */
@@ -560,11 +448,11 @@ type Ctx = {
   now: string[]
   skills: string[]
   faq: DesktopFaq[]
-  song: { title: string; artist: string }
+  song: MusicTrack
   uid: string
   openProject: (p: Project, from?: { x: number; y: number }) => void
   openKind: (k: Kind) => void
-  music: ReturnType<typeof useMusicBox>
+  music: ReturnType<typeof useAudioPlayer>
 }
 
 function AboutView({ c }: { c: Ctx }) {
@@ -672,9 +560,9 @@ function FinderView({ win, c, go, narrow }: { win: Win; c: Ctx; go: (loc: Loc, p
         <div className="cdp-main" onClick={(e) => e.target === e.currentTarget && setSel(null)}>
           {project ? (
             <article className="cdp-detail">
-              <div className="cdp-shot">
+              <a className="cdp-shot" href={project.image} target="_blank" rel="noreferrer" aria-label={"View full-size preview of " + project.name}>
                 <ProjectArt project={project} />
-              </div>
+              </a>
               <div className="cdp-detail-info">
                 <h3>{project.name}</h3>
                 <p className="cdp-muted">
@@ -720,7 +608,7 @@ function FinderView({ win, c, go, narrow }: { win: Win; c: Ctx; go: (loc: Loc, p
                   onPointerUp={(e) => e.pointerType === "touch" && open(p)}
                   onDoubleClick={() => open(p)}
                 >
-                  <FolderIcon style="plain" uid={c.uid} size={46} />
+                  <ProjectArt project={p} square />
                   <span>{p.name}</span>
                 </button>
               ))}
@@ -744,7 +632,7 @@ function FinderView({ win, c, go, narrow }: { win: Win; c: Ctx; go: (loc: Loc, p
                   onDoubleClick={() => open(p)}
                 >
                   <span>
-                    <FolderIcon style="plain" uid={c.uid} size={16} /> {p.name}
+                    <ProjectArt project={p} square /> {p.name}
                   </span>
                   <span>{p.year ?? "—"}</span>
                   <span>{p.role ?? "Project"}</span>
@@ -981,36 +869,7 @@ function NotesView({ c }: { c: Ctx }) {
 }
 
 function MusicView({ c }: { c: Ctx }) {
-  const { playing, play, stop } = c.music
-  return (
-    <div className="cdp-music" data-playing={playing ? "on" : "off"}>
-      <div className="cdp-disc" aria-hidden="true">
-        <svg viewBox="0 0 80 80" className="cdp-svg" width="80" height="80">
-          <circle cx="40" cy="40" r="38" fill="#1d1d20" />
-          {[32, 26, 20].map((r) => (
-            <circle key={r} cx="40" cy="40" r={r} fill="none" stroke="#fff" strokeOpacity=".08" />
-          ))}
-          <circle cx="40" cy="40" r="13" fill="var(--cdp-accent)" />
-          <circle cx="40" cy="40" r="2.5" fill="#1d1d20" />
-        </svg>
-        <svg viewBox="0 0 40 28" width="30" height="21" className="cdp-svg cdp-disc-bow">
-          <Bow x={20} y={14} fill="var(--cdp-accent)" stroke="var(--cdp-deep)" />
-        </svg>
-      </div>
-      <div className="cdp-music-info">
-        <b>{c.song.title}</b>
-        <span className="cdp-muted">{c.song.artist}</span>
-        <div className="cdp-eq" aria-hidden="true">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <i key={i} style={{ animationDelay: i * -0.17 + "s" }} />
-          ))}
-        </div>
-        <button type="button" className="cdp-chip is-solid" onClick={playing ? stop : play} aria-pressed={playing}>
-          {playing ? "❚❚ pause" : "▶ play"}
-        </button>
-      </div>
-    </div>
-  )
+  return <MusicPlayer player={c.music} song={c.song} />
 }
 
 function SkillsView({ c }: { c: Ctx }) {
@@ -1080,7 +939,7 @@ const SIZES: { [K in Kind]: { w: number; h: number; title: string } } = {
   messages: { w: 360, h: 440, title: "Messages" },
   gallery: { w: 560, h: 400, title: "Gallery" },
   notes: { w: 300, h: 320, title: "Now" },
-  music: { w: 340, h: 180, title: "Music Box" },
+  music: { w: 360, h: 550, title: "Music" },
   skills: { w: 400, h: 300, title: "Skills" },
   trash: { w: 400, h: 260, title: "Trash" },
 }
@@ -1112,7 +971,7 @@ export default function CoquetteDesktopPortfolio({
   song = profile.song,
   accent = "#f4b6cb",
   deep = "#7d1d45",
-  wallpaper: wallpaperIn = "plain",
+  wallpaper: wallpaperIn = "video",
   openOnLoad = null,
   intro = true,
   height = "100svh",
@@ -1150,7 +1009,7 @@ export default function CoquetteDesktopPortfolio({
   const [dockX, setDockX] = React.useState(null as number | null)
   const dockRefs = React.useRef({} as { [k: string]: HTMLButtonElement | null })
   const dockBase = React.useRef({} as { [k: string]: number })
-  const music = useMusicBox()
+  const music = useAudioPlayer(song)
 
   /* ---- measure ---- */
   React.useLayoutEffect(() => {
@@ -1338,7 +1197,7 @@ export default function CoquetteDesktopPortfolio({
       return
     }
     const mine = wins.filter((w) => w.kind === app.kind)
-    const hidden = mine.find((w) => w.phase === "hidden")
+    const hidden = mine.find((w) => w.phase === "hidden" || w.phase === "min")
     if (hidden) return restore(hidden.id)
     if (mine.length) return focus(mine.reduce((a, b) => (a.z > b.z ? a : b)).id)
     launch(app.kind, undefined, app.kind === "finder" ? { folder: null, project: null, tag: null } : undefined)
@@ -1531,6 +1390,7 @@ export default function CoquetteDesktopPortfolio({
   const running = new Set(wins.map((w) => w.kind as string))
   const topZ = wins.reduce((m, w) => (w.phase === "hidden" ? m : Math.max(m, w.z)), 0)
   const WALLS: Record<Wallpaper, string> = {
+    video: "#24342c",
     plain: "var(--cdp-desk)",
     blush: "radial-gradient(120% 90% at 50% 45%, var(--cdp-desk) 40%, color-mix(in oklab, var(--cdp-accent) 38%, var(--cdp-desk)))",
     gingham:
@@ -1544,6 +1404,7 @@ export default function CoquetteDesktopPortfolio({
       className={"cdp-root " + className}
       data-intro={intro && !reduced ? "on" : "off"}
       data-compact={compact ? "on" : "off"}
+      data-wallpaper={wall}
       style={{ height, "--cdp-accent": accent, "--cdp-deep": deep, background: WALLS[wall] } as React.CSSProperties}
       onContextMenu={(e) => {
         if ((e.target as HTMLElement).closest(".cdp-win,.cdp-dock,.cdp-over")) return
@@ -1553,6 +1414,8 @@ export default function CoquetteDesktopPortfolio({
       }}
     >
       <style>{CDP_CSS}</style>
+      {music.element}
+      {wall === "video" && <VideoWallpaper />}
       <svg width="0" height="0" className="cdp-defs" aria-hidden="true">
         <defs>
           <pattern id={uid + "-ging"} width="8" height="8" patternUnits="userSpaceOnUse">
@@ -1717,7 +1580,7 @@ export default function CoquetteDesktopPortfolio({
             type="button"
             role="menuitem"
             onClick={() => {
-              const order: Wallpaper[] = ["plain", "blush", "gingham", "dots"]
+              const order: Wallpaper[] = ["video", "plain", "blush", "gingham", "dots"]
               setWall((w) => order[(order.indexOf(w) + 1) % order.length])
               setMenu(null)
             }}
@@ -1983,21 +1846,6 @@ const CDP_CSS = `
 .cdp-notes label{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;cursor:pointer}
 .cdp-notes input{accent-color:var(--cdp-deep);margin-top:3px}
 .cdp-notes input:checked+span{text-decoration:line-through;color:var(--cdp-mute)}
-
-.cdp-music{display:flex;align-items:center;gap:16px;padding:14px 18px;flex:1}
-.cdp-disc{position:relative;flex:none}
-.cdp-disc>.cdp-svg:first-child{animation:cdp-spin 4s linear infinite;animation-play-state:paused}
-.cdp-music[data-playing="on"] .cdp-disc>.cdp-svg:first-child{animation-play-state:running}
-.cdp-disc-bow{position:absolute;right:-8px;top:-6px}
-@keyframes cdp-spin{to{transform:rotate(360deg)}}
-.cdp-music-info{display:flex;flex-direction:column;gap:3px;min-width:0}
-.cdp-music-info b{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:17px}
-.cdp-music-info span{font-size:11.5px}
-.cdp-music-info .cdp-chip{align-self:flex-start;margin-top:6px}
-.cdp-eq{display:flex;align-items:flex-end;gap:3px;height:14px;margin-top:4px}
-.cdp-eq i{width:3px;height:100%;border-radius:2px;background:var(--cdp-deep);transform-origin:bottom;transform:scaleY(.25);animation:cdp-eq .7s ease-in-out infinite alternate;animation-play-state:paused}
-.cdp-music[data-playing="on"] .cdp-eq i{animation-play-state:running}
-@keyframes cdp-eq{to{transform:scaleY(1)}}
 
 .cdp-skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:12px 8px;padding:16px;overflow:auto}
 .cdp-skill{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;text-align:center;animation:cdp-pop .3s cubic-bezier(.2,.9,.3,1.3) both}

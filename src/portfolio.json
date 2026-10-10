@@ -30,7 +30,8 @@
             "Vite",
             "MapLibre"
           ],
-          "url": "https://github.com/5erax/SEP490_FE_MedicalAIAssistant"
+          "url": "https://github.com/5erax/SEP490_FE_MedicalAIAssistant",
+          "image": "/media/medimate-preview.webp"
         },
         {
           "name": "FinGenie",
@@ -42,7 +43,8 @@
             "Expo",
             "PostgreSQL"
           ],
-          "url": "https://github.com/5erax/FinGenie"
+          "url": "https://github.com/5erax/FinGenie",
+          "image": "/media/fingenie-interface.webp"
         },
         {
           "name": "GeoConnect",
@@ -53,7 +55,8 @@
             "Leaflet",
             "Socket.io"
           ],
-          "url": "https://github.com/5erax/geoconnect"
+          "url": "https://github.com/5erax/geoconnect",
+          "image": "/media/geoconnect-preview.webp"
         },
         {
           "name": "CVmate",
@@ -64,7 +67,8 @@
             "TypeScript",
             "Hugging Face"
           ],
-          "url": "https://github.com/5erax/CVmate"
+          "url": "https://github.com/5erax/CVmate",
+          "image": "/media/cvmate-preview.webp"
         },
         {
           "name": "MLN Web",
@@ -75,7 +79,8 @@
             "Timelines",
             "Quizzes"
           ],
-          "url": "https://github.com/5erax/MLN-web"
+          "url": "https://github.com/5erax/MLN-web",
+          "image": "/media/mln-preview.webp"
         },
         {
           "name": "MLN AI",
@@ -86,7 +91,8 @@
             "FastAPI",
             "Supabase"
           ],
-          "url": "https://mln-ai.vercel.app/"
+          "url": "https://mln-ai.vercel.app/",
+          "image": "/media/mln-ai-interface.webp"
         }
       ]
     },
@@ -108,7 +114,8 @@
             "GSAP",
             "Lenis"
           ],
-          "url": "https://net-studio-nu.vercel.app/"
+          "url": "https://net-studio-nu.vercel.app/",
+          "image": "/media/net-studio-preview.webp"
         }
       ]
     },
@@ -130,7 +137,8 @@
             "Supabase",
             "Motion"
           ],
-          "url": "https://garden-dreams-florist.vercel.app/"
+          "url": "https://garden-dreams-florist.vercel.app/",
+          "image": "/media/garden-dreams-preview.webp"
         },
         {
           "name": "Ecommerce Mobile",
@@ -140,7 +148,8 @@
             "React Native",
             "Expo"
           ],
-          "url": "https://github.com/5erax/ecomerce-mobile"
+          "url": "https://github.com/5erax/ecomerce-mobile",
+          "image": "/media/ecommerce-interface.webp"
         }
       ]
     },
@@ -161,7 +170,8 @@
             "PixiJS",
             "Vite"
           ],
-          "url": "https://github.com/5erax/ProZ0"
+          "url": "https://github.com/5erax/ProZ0",
+          "image": "/media/proz0-preview.webp"
         },
         {
           "name": "MediMate Mobile",
@@ -172,7 +182,8 @@
             "Expo",
             "TypeScript"
           ],
-          "url": "https://github.com/5erax/SEP490_MB_MedicalAIAssistant"
+          "url": "https://github.com/5erax/SEP490_MB_MedicalAIAssistant",
+          "image": "/media/medimate-mobile-interface.webp"
         }
       ]
     }
@@ -226,8 +237,18 @@
       "a": "ProZ0 — a browser-first 2D pixel-art survival and exploration sandbox. Its Phase 1 vertical slice is in development."
     }
   ],
+  "wallpaper": {
+    "src": "https://ugi9ut6qxbousvhf.public.blob.vercel-storage.com/wallpaper/minecraft-autumn-mountains-original.mp4",
+    "originalBytes": 131033887,
+    "sha256": "0f9d6db1ac72bfa400da592a46d385da67623bd3170c0726b335d7222bc8fddf",
+    "width": 3840,
+    "height": 2160,
+    "fps": 60
+  },
   "song": {
-    "title": "Astraa’s music box",
-    "artist": "Synthesised ribbon waltz"
+    "title": "Buồn vương mi",
+    "artist": "htingale",
+    "src": "/media/buon-vuong-mi.mp3",
+    "artwork": "/media/autumn-poster.jpg"
   }
 }

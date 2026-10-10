@@ -1,7 +1,7 @@
 // Install-safety and window-manager logic checks for components/coquette-desktop-portfolio.
 // Run: node tests/coquette-desktop-portfolio.test.mjs
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
+import { readFileSync, statSync } from "node:fs"
 import { stripTypeScriptTypes } from "node:module"
 
 const SLUG = "coquette-desktop-portfolio"
@@ -17,8 +17,8 @@ const region = (name) => {
 /* ---------- nothing travels with it ---------- */
 
 const imports = [...src.matchAll(/^import .*?from ["']([^"']+)["']/gm)].map((m) => m[1])
-assert.deepEqual(imports, ["react", "../portfolio.json"], "only React and personal content are imported")
-assert.doesNotMatch(src, /@import|@font-face|<link\b|<img\b|fetch\(|new Image\(/, "nothing loads at runtime")
+assert.deepEqual(imports, ["react", "../portfolio.json", "./music-player", "./video-wallpaper"], "only React, personal content and local media components are imported")
+assert.doesNotMatch(src, /@import|@font-face|<link\b|fetch\(|new Image\(/, "no third-party assets or API requests")
 assert.doesNotMatch(src, /https?:\/\//, "external links live only in personal content")
 assert.ok(src.includes('height = "100svh"'), "height defaults to a definite length")
 assert.doesNotMatch(src, /\bh-full\b/, "no h-full")
@@ -124,6 +124,14 @@ assert.equal(L.answerFor("zz", faq, "fallback"), "fallback")
 
 console.log("coquette-desktop-portfolio: ok")
 
+const dockSource = src.slice(src.indexOf('const onDock ='), src.indexOf('/* ---- auto-open ---- */'))
+const runDock = new Function('wins', 'restore', 'focus', 'launch', stripTypeScriptTypes(dockSource) + '; onDock({ kind: "music", key: "music" })')
+for (const phase of ['min', 'hidden', 'open']) {
+  const calls = []
+  runDock([{ id: 'music-1', kind: 'music', phase, z: 1 }], id => calls.push(['restore', id]), id => calls.push(['focus', id]), () => calls.push(['launch']))
+  assert.deepEqual(calls, [[phase === 'open' ? 'focus' : 'restore', 'music-1']], 'dock restores music even during the minimize animation')
+}
+
 const profile = JSON.parse(readFileSync(new URL('../src/portfolio.json', import.meta.url), 'utf8'))
 assert.equal(profile.name, 'Astraa')
 assert.equal(profile.email, 'lagna0175@gmail.com')
@@ -132,6 +140,28 @@ const projects = profile.folders.flatMap(f => f.projects)
 assert.equal(projects.length, 11)
 assert.equal(new Set(projects.map(p => p.name)).size, projects.length)
 for (const p of projects) assert.equal(new URL(p.url).protocol, 'https:')
+for (const p of projects) {
+  assert.ok(p.image.startsWith('/media/'), 'previews are local assets')
+  assert.ok(statSync(new URL('../public' + p.image, import.meta.url)).size > 1000, `${p.name} preview exists`)
+}
+for (const asset of [profile.song.src, profile.song.artwork]) {
+  assert.ok(statSync(new URL('../public' + asset, import.meta.url)).size > 1000, `${asset} exists`)
+}
+assert.equal(new URL(profile.wallpaper.src).protocol, 'https:')
+assert.equal(profile.wallpaper.originalBytes, 131033887)
+assert.equal(profile.wallpaper.width, 3840)
+assert.equal(profile.wallpaper.height, 2160)
+assert.equal(profile.wallpaper.fps, 60)
+const wallpaper = read('video-wallpaper.tsx')
+assert.match(wallpaper, /autoPlay loop muted playsInline/)
+assert.doesNotMatch(wallpaper, /<button|controls/, 'wallpaper has no pause or player controls')
+const player = read('music-player.tsx')
+const formatSource = player.slice(player.indexOf('const formatTime ='), player.indexOf('export function MusicPlayer'))
+const formatTime = new Function(stripTypeScriptTypes(formatSource) + '; return formatTime')()
+assert.equal(formatTime(65.8), '1:05')
+assert.equal(formatTime(-1), '0:00')
+assert.equal(formatTime(Infinity), '0:00')
+assert.equal(formatTime(NaN), '0:00')
 assert.ok(profile.links.every(l => new URL(l.url).protocol === 'https:'))
 assert.doesNotMatch(src, /role="listitem"|role="row"/, 'project controls keep their native button semantics')
 assert.ok(src.includes('calc((100vw - 52px)/12)'), 'all twelve dock apps fit a 320px screen')
