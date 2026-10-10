@@ -1,0 +1,11 @@
+:root {
+  color-scheme: light;
+  --color-background: #fff;
+  --color-foreground: #111;
+  --color-muted-foreground: #666;
+  --color-border: #d6d6da;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }

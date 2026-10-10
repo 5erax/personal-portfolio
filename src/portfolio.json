@@ -1,0 +1,233 @@
+{
+  "name": "Astraa",
+  "eyebrow": "welcome to Astraa’s",
+  "headline": "portfolio",
+  "email": "lagna0175@gmail.com",
+  "about": {
+    "title": "A note from Astraa",
+    "paragraphs": [
+      "I’m Astraa, a fullstack developer in Vietnam. I build expressive interfaces, thoughtful motion, and the components, APIs, and data flows behind them.",
+      "My strongest focus is expressive UI, thoughtful motion, and the details that make an experience feel finished. Underneath the visual layer, I build the components, APIs, and data flows that make it work.",
+      "Currently building ProZ0, a browser-first pixel-art survival and exploration sandbox. Open to frontend and fullstack opportunities, especially where UI and interaction matter."
+    ]
+  },
+  "folders": [
+    {
+      "id": "web-app",
+      "label": "web apps",
+      "title": "Web Applications",
+      "style": "blush",
+      "x": 17,
+      "y": 62,
+      "projects": [
+        {
+          "name": "MediMate AI",
+          "role": "Healthcare · web & mobile",
+          "description": "An AI-assisted pre-visit interface for symptom intake, care discovery, and patient workflows. Making complex information feel clear, calm, and approachable.",
+          "tags": [
+            "React",
+            "JavaScript",
+            "Vite",
+            "MapLibre"
+          ],
+          "url": "https://github.com/5erax/SEP490_FE_MedicalAIAssistant"
+        },
+        {
+          "name": "FinGenie",
+          "role": "Personal finance · web & mobile",
+          "description": "AI-assisted personal finance across web and mobile. A shared codebase brings together a Next.js web app, a NestJS API, an Expo mobile app, and PostgreSQL.",
+          "tags": [
+            "Next.js",
+            "NestJS",
+            "Expo",
+            "PostgreSQL"
+          ],
+          "url": "https://github.com/5erax/FinGenie"
+        },
+        {
+          "name": "GeoConnect",
+          "role": "Maps & communities",
+          "description": "Location-based communities, interactive maps, and real-time messaging. Built with React, Leaflet, and Socket.io.",
+          "tags": [
+            "React",
+            "Leaflet",
+            "Socket.io"
+          ],
+          "url": "https://github.com/5erax/geoconnect"
+        },
+        {
+          "name": "CVmate",
+          "role": "Career tools",
+          "description": "CV creation, ATS-oriented feedback, and interview practice. An interface for preparing the next step, built with React, TypeScript, and Hugging Face.",
+          "tags": [
+            "React",
+            "TypeScript",
+            "Hugging Face"
+          ],
+          "url": "https://github.com/5erax/CVmate"
+        },
+        {
+          "name": "MLN Web",
+          "role": "Interactive learning",
+          "description": "An interactive Vietnamese Party history learning platform, with lessons, timelines, and quizzes.",
+          "tags": [
+            "Education",
+            "Timelines",
+            "Quizzes"
+          ],
+          "url": "https://github.com/5erax/MLN-web"
+        },
+        {
+          "name": "MLN AI",
+          "role": "Learning platform · web experience",
+          "description": "A Vietnamese Marx–Lenin philosophy learning application with an AI chatbot and a dedicated sign-in experience. Built with React, FastAPI and Supabase.",
+          "tags": [
+            "React",
+            "FastAPI",
+            "Supabase"
+          ],
+          "url": "https://mln-ai.vercel.app/"
+        }
+      ]
+    },
+    {
+      "id": "websites",
+      "label": "websites",
+      "title": "Websites & Interfaces",
+      "style": "noir",
+      "x": 81,
+      "y": 12,
+      "projects": [
+        {
+          "name": "Nét Studio",
+          "year": "2026",
+          "role": "Creative studio · interactive website",
+          "description": "A bilingual creative studio website with cobalt engraved illustrations, switchable palettes, project filters, and a downloadable brief. Built with React, GSAP, and Lenis.",
+          "tags": [
+            "React",
+            "GSAP",
+            "Lenis"
+          ],
+          "url": "https://net-studio-nu.vercel.app/"
+        }
+      ]
+    },
+    {
+      "id": "ecommerce",
+      "label": "ecommerce",
+      "title": "Commerce Projects",
+      "style": "ribbon",
+      "x": 61,
+      "y": 27,
+      "projects": [
+        {
+          "name": "Garden Dreams",
+          "year": "2026",
+          "role": "Florist storefront · web experience",
+          "description": "A Vietnamese florist storefront with product discovery, a cart, personalised cards, and customer order history. Built with React and Supabase.",
+          "tags": [
+            "React",
+            "Supabase",
+            "Motion"
+          ],
+          "url": "https://garden-dreams-florist.vercel.app/"
+        },
+        {
+          "name": "Ecommerce Mobile",
+          "role": "Mobile commerce",
+          "description": "A React Native and Expo shopping experience with product browsing, a wishlist, a cart, and order history.",
+          "tags": [
+            "React Native",
+            "Expo"
+          ],
+          "url": "https://github.com/5erax/ecomerce-mobile"
+        }
+      ]
+    },
+    {
+      "id": "mobile-games",
+      "label": "mobile & games",
+      "title": "Mobile & Games",
+      "style": "bows",
+      "x": 83,
+      "y": 58,
+      "projects": [
+        {
+          "name": "ProZ0",
+          "role": "Browser game · in development",
+          "description": "A 2D pixel-art survival and exploration sandbox about building a new civilization and uncovering the traces of an older one. Its Phase 1 vertical slice is in development.",
+          "tags": [
+            "TypeScript",
+            "PixiJS",
+            "Vite"
+          ],
+          "url": "https://github.com/5erax/ProZ0"
+        },
+        {
+          "name": "MediMate Mobile",
+          "role": "Healthcare · mobile app",
+          "description": "The mobile companion to MediMate AI, built with React Native and Expo. A personal health interface for sign-in, health profiles and care workflows.",
+          "tags": [
+            "React Native",
+            "Expo",
+            "TypeScript"
+          ],
+          "url": "https://github.com/5erax/SEP490_MB_MedicalAIAssistant"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/5erax"
+    }
+  ],
+  "availability": "Open to frontend & fullstack opportunities · Ho Chi Minh, Vietnam",
+  "now": [
+    "Building the ProZ0 Phase 1 vertical slice",
+    "Creating expressive web interfaces",
+    "Exploring UI, motion and interaction"
+  ],
+  "skills": [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Figma",
+    "PixiJS",
+    "React Native",
+    "Expo",
+    "Node.js",
+    "Express",
+    "NestJS",
+    "Spring Boot",
+    "PostgreSQL",
+    "MongoDB",
+    "Prisma",
+    "Git",
+    "Docker",
+    "GitHub Actions"
+  ],
+  "faq": [
+    {
+      "q": "What do you do?",
+      "a": "I’m Astraa, a fullstack developer in Vietnam. I build web apps, mobile experiences and browser games, with a focus on UI and interaction."
+    },
+    {
+      "q": "Are you available?",
+      "a": "I’m open to frontend and fullstack opportunities, especially where UI and interaction matter. Email me to discuss your project."
+    },
+    {
+      "q": "How do I reach you?",
+      "a": "Email lagna0175@gmail.com or open Mail in the dock. My code is on github.com/5erax."
+    },
+    {
+      "q": "What are you building now?",
+      "a": "ProZ0 — a browser-first 2D pixel-art survival and exploration sandbox. Its Phase 1 vertical slice is in development."
+    }
+  ],
+  "song": {
+    "title": "Astraa’s music box",
+    "artist": "Synthesised ribbon waltz"
+  }
+}
